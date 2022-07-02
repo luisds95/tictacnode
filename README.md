@@ -1,7 +1,7 @@
 # TicTacNode!
 Tic-Tac-Toe solved with Reinforcement Learning in NodeJS!
 
-![TicTacToe in NodeJS](assets/p2-wins.PNG)
+![TicTacToe in NodeJS](assets/p2-wins.png)
 
 Play live at [luisdasilva.io](https://luisdasilva.io/blog/cracking-tictactoe/)
 

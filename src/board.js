@@ -1,4 +1,4 @@
-const GameOutcome = require("./gameOutcome.js");
+const {GameOutcome, getWinnerOutcome} = require("./gameOutcome.js");
 
 class Board {
     constructor(state) {
@@ -9,6 +9,7 @@ class Board {
         this.charMap = {"0": " ", "1": "X", "2": "O"};
 
         this.assertValid();
+        this._outcome = null;
     }
 
     toString() {
@@ -38,13 +39,15 @@ class Board {
         }
         const previousPosition = this.state[move];
 
-        this.state[move] = this.nextPlayer();
+        this.state[move] = `${this.nextPlayer()}`;
         try {
             this.assertValid();
         } catch (error) {
             this.state[move] = previousPosition;
             throw error;
         }
+        
+        this._outcome = null;
     }
 
     nextPlayer() {
@@ -62,11 +65,18 @@ class Board {
     }
 
     getOutcome() {
+        if (this._outcome === null) {
+            this._outcome = this._getOutcome();
+        }
+        return this._outcome;
+    }
+
+    _getOutcome() {
         // Find winner horinzontally
         for (let idx = 0; idx < this.state.length; idx += 3) {
             const value = this.state[idx];
             if (value !== "0" && value === this.state[idx+1] && value === this.state[idx+2]) {
-                return this._getWinnerOutcome(value);
+                return getWinnerOutcome(value);
             }
         }
 
@@ -74,7 +84,7 @@ class Board {
         for (let idx = 0; idx < this.state.length; idx++) {
             const value = this.state[idx];
             if (value !== "0" && value === this.state[idx+3] && value === this.state[idx+6]) {
-                return this._getWinnerOutcome(value);
+                return getWinnerOutcome(value);
             }
         }
 
@@ -86,7 +96,7 @@ class Board {
                 (this.state[2] === diagonal && diagonal === this.state[6])
             )
         ) {
-            return this._getWinnerOutcome(diagonal);
+            return getWinnerOutcome(diagonal);
         }
 
         // No winners
@@ -94,14 +104,6 @@ class Board {
             return GameOutcome.Draw;
         } else {
             return GameOutcome.NotFinished;
-        }
-    }
-
-    _getWinnerOutcome(winner) {
-        if (winner === "1") {
-            return GameOutcome.P1Wins;
-        } else {
-            return GameOutcome.P2Wins;
         }
     }
 
@@ -130,12 +132,20 @@ class Board {
 
     getValidMoves() {
         const validMoves = [];
-        for (let idx = 0; idx < this.state.length; idx++) {
-            if (this.state[idx] === "0") {
-                validMoves.push(idx);
+
+        if (this.getOutcome() === GameOutcome.NotFinished) {
+            for (let idx = 0; idx < this.state.length; idx++) {
+                if (this.state[idx] === "0") {
+                    validMoves.push(idx);
+                }
             }
-        }
+        }        
+        
         return validMoves;
+    }
+
+    copy() {
+        return new Board(this.toString());
     }
 }
 

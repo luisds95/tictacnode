@@ -1,5 +1,5 @@
 const Board = require("./board.js");
-const GameOutcome = require("./gameOutcome.js");
+const {GameOutcome} = require("./gameOutcome.js");
 
 
 test("Create a blank board", () => {
@@ -82,7 +82,19 @@ it.each`
     ${"000000000"} | ${[0, 1, 2, 3, 4, 5, 6, 7, 8]}
     ${"121221112"} | ${[]}
     ${"120021112"} | ${[2, 3]}
+    ${"111220000"} | ${[]}
+    ${"121221120"} | ${[]}
 `("Valid moves from $state should be $moves", ({state, moves}) => {
     const board = new Board(state);
     expect(board.getValidMoves()).toEqual(moves);
+});
+
+
+test("Board copy can be modified without affecting original instance", () => {
+    const original = new Board("100000000");
+    const copy = original.copy();
+    copy.makeMove(1);
+
+    expect(original.toString()).toBe("100000000");
+    expect(copy.toString()).toBe("120000000");
 });

@@ -7,4 +7,12 @@ const GameOutcome = {
 };
 Object.freeze(GameOutcome);
 
-module.exports = GameOutcome;
+function getWinnerOutcome(winner) {
+    if (winner === "1") {
+        return GameOutcome.P1Wins;
+    } else {
+        return GameOutcome.P2Wins;
+    }
+}
+
+module.exports = {GameOutcome, getWinnerOutcome};

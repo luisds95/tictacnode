@@ -1,5 +1,5 @@
 const Board = require("./board");
-const GameOutcome = require("./gameOutcome");
+const { GameOutcome } = require("./gameOutcome");
 
 class Game {
     constructor(p1, p2) {

@@ -1,0 +1,32 @@
+{
+  "name": "tictacnode",
+  "version": "1.0.0",
+  "description": "TicTacToe solved with NodeJs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "jest",
+    "lint": "npx eslint src/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luisds95/tictacnode.git"
+  },
+  "keywords": [
+    "tictactoe"
+  ],
+  "author": "Luis Da Silva",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/luisds95/tictacnode/issues"
+  },
+  "homepage": "https://github.com/luisds95/tictacnode#readme",
+  "devDependencies": {
+    "eslint": "^8.19.0",
+    "jest": "^28.1.2"
+  },
+  "dependencies": {
+    "eslint-plugin-jest": "^26.5.3",
+    "prompt-sync": "^4.2.0"
+  }
+}

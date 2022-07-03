@@ -1,3 +1,6 @@
+"use strict";
+
+const Board = require("../board");
 const {GameOutcome, getWinnerOutcome} = require("../gameOutcome");
 const { getBestActionsFromValues } = require("./utils");
 
@@ -10,18 +13,21 @@ class ExhaustiveSearchPlayer {
             draw: 0,
             lose: -1
         };
-        this.isTraining = false;
         this.winOutcome = getWinnerOutcome(`${this.number}`);
+
     }
 
     getAction(board) {
-        const values = this.evaluateMoves(board);
+        let values = this.database.get(board);
+        if (!values) {
+            values = this.evaluateMoves(board);
+        }
         const shouldMax = board.nextPlayer() == this.number;
         const action = getBestActionsFromValues(values, shouldMax);
         return action.action;
     }
 
-    evaluateMoves(board) {
+    evaluateMoves({board, training}) {
         const values = {};
         for (let move of board.getValidMoves()) {
             const newBoard = board.copy();
@@ -29,7 +35,7 @@ class ExhaustiveSearchPlayer {
             const outcome = newBoard.getOutcome();
 
             if (outcome === GameOutcome.NotFinished) {
-                const innerValues = this.evaluateMoves(newBoard);
+                const innerValues = this.evaluateMoves({board: newBoard, training: training});
                 const shouldMax = newBoard.nextPlayer() == this.number;
                 const actions = getBestActionsFromValues(innerValues, shouldMax);
                 values[move] = actions.value;
@@ -42,7 +48,23 @@ class ExhaustiveSearchPlayer {
             }
         }
 
+        if (training) {
+            this.database.update(board, values);
+        }
+
         return values;
+    }
+
+    train() {
+        console.log("Starting training...");
+        const initTime = new Date();
+
+        const board = new Board();
+        this.evaluateMoves({board: board, training: true});
+        this.database.commit();
+
+        const finishTime = new Date();
+        console.log(`Finished training in ${(finishTime - initTime) / 1000}s`);
     }
 }
 

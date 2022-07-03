@@ -1,3 +1,5 @@
+"use strict";
+
 const {GameOutcome, getWinnerOutcome} = require("./gameOutcome.js");
 
 class Board {

@@ -1,3 +1,5 @@
+"use strict";
+
 const Board = require("./board");
 const { GameOutcome } = require("./gameOutcome");
 

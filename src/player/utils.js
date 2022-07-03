@@ -1,3 +1,5 @@
+"use strict";
+
 function getBestActionsFromValues(values, maximize) {
     let bestAction = null;
     let bestValue = 100;

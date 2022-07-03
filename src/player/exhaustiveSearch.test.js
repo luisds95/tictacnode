@@ -8,7 +8,7 @@ it.each`
     const board = new Board(state);
     const player = new ExhaustiveSearchPlayer(1, {});
     
-    const values = player.evaluateMoves(board);
+    const values = player.evaluateMoves({board: board});
 
     expect(values).toEqual(expected);
 });

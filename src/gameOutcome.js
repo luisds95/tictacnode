@@ -1,3 +1,5 @@
+"use strict";
+
 const GameOutcome = {
     "P1Wins": "P1Wins",
     "P2Wins": "P2Wins",
